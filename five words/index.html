@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5 букв - Игра</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#my-form').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                document.getElementById("my-form").reset();
+                $.post('main.php', formData, function(response) {
+                    var message = response.message;
+                    var count = response.count;
+                    var word = response.word;
+                    var answer = response.answer;
+                    var id = response.id;
+                    $('#count').text(count);
+                    var container = document.getElementById("result");
+                    document.getElementById(id).innerHTML = answer;
+
+                    if (message == 'VICTORY' || message == 'FAIL' || message == 'ERROR_SYMBOL') {
+                        $('#submit-button').remove();
+                        $('#count').remove();
+                        document.getElementById('answer').innerHTML = word;
+                    }
+                }, 'json');
+            });
+            $(window).on('beforeunload', function() {
+                $.post('main.php', {message: 'reload'}, function(response) {
+                });
+            });
+        });
+        $(document).ready(function() {
+            var reloadLink = $('#reload-link');
+            reloadLink.on('click', function(event) {
+                event.preventDefault();
+                window.location.reload();
+            });
+        });
+    </script>
+    <style>
+        .border-rounded {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+
+        }
+        .centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .square {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border: 2px solid black;
+            border-radius: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            margin-right: 5px;
+            margin-top: 5px;
+        }
+        .border-rounded {
+            border: 2px solid black;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .container {
+            padding: 0;
+            margin-bottom: 0;
+        }
+        .row {
+            padding: 0;
+            margin-bottom: 0;
+        }
+        h4.grey {
+            color: grey;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        h4.yellow {
+            color: #d9b10d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        h4.green {
+            color: #2abd34;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        h4.red {
+            color: red;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .answer-box {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="container-fluid bg-light">
+    <div class="row">
+        <div class="col-md-12 text-center py-3">
+            <h1>Логотип</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+             <div id="result" class="border-rounded p-3">
+                <div id="1" class="d-flex justify-content-center mb-3">
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                </div>
+                <div id="2" class="d-flex justify-content-center mb-3">
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                </div>
+                <div id="3" class="d-flex justify-content-center mb-3">
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                </div>
+                <div id="4" class="d-flex justify-content-center mb-3">
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                </div>
+                <div id="5" class="d-flex justify-content-center mb-3">
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                    <div class="square mx-2"></div>
+                </div>
+        </div>
+            <div class="col-md-8 offset-md-2">
+                <div class="d-flex justify-content-center">
+                        <div id="answer">
+
+                        </div>
+                </div>
+            </div>
+        <div class="col-md-8 offset-md-2">
+            <div class="border-rounded p-3">
+                <div class="d-flex justify-content-center">
+                    <div class="input-group d-flex">
+                        <form id="my-form" class="d-flex flex-row flex-fill">
+                            <input type="text" class="form-control mr-2 flex-fill" placeholder="Введите слово" minlength="5" maxlength="5" id="name" name="name">
+                            <div class="input-group-append flex-shrink-0">
+                                <button type="submit" id="submit-button" class="btn btn-primary m-1">Проверить</button>
+                                <a href="#" id="reload-link" class="btn btn-danger m-1" role="button" data-bs-toggle="button">Заново</a>
+                                <button id="count" class="btn btn-warning m-1 btn-block disabled">Попыток: 5</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+</body>
+</html>
